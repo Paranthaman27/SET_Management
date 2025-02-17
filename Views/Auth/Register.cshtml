@@ -1,0 +1,168 @@
+﻿@{
+    Layout = null;
+}
+@model SET_Management.Models.Entity.mstUser
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Register Page";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>SET Management Systems</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+          name="viewport" />
+    <link rel="icon"
+          href="assets/img/kaiadmin/favicon.ico"
+          type="image/x-icon" />
+
+    <!-- Fonts and icons -->
+    <script src="~/assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>$(document).ready(function () {
+            localStorage.clear();
+        });
+        WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["assets/css/fonts.min.css"],
+            },
+            active: function () {
+                sessionStorage.fonts = false;
+            },
+        });</script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="~/assets/css/kaiadmin.min.css" />
+
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" href="~/assets/css/demo.css" />
+</head>
+<body>
+
+
+
+    <div class="container mt-5 middle-box loginscreen animated ">
+        <div class="row justify-content-center ">
+            <div class="col-md-6  mt-5">
+                <div class="card justify-content-center">
+                    <div class="card-header">
+                        <div class="card-title">Register</div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <form asp-controller="Auth" asp-action="Register" method="post" autocomplete="off">
+                            <div class="row">
+                                @* User Name *@
+                                <div class="form-group">
+                                    <label for="userName">User Name</label>
+                                    <input type="text" Required class="form-control" id="userName" name="userName" placeholder="User Name" maxlength="75">
+                                    <span id="userName-error" class="text-danger"></span>
+                                </div>
+                                @* User Email *@
+                                <div class="form-group">
+                                    <label for="userEmail">User Email</label>
+                                    <input type="email" Required class="form-control" id="userEmail" name="userEmail" placeholder="Email" maxlength="75">
+                                    <span id="userEmail-error" class="text-danger"></span>
+                                </div>
+                                @* Password *@
+                                <div class="form-group">
+                                    <label for="userPassword">Password</label>
+                                    <input type="password" Required class="form-control" id="userPassword" name="userPassword" placeholder="Password">
+                                    <span id="userPassword-error" class="text-danger"></span>
+                                </div>
+                                @* Confirm Password *@
+                                <div class="form-group">
+                                    <label for="cPassword">Confirm Password</label>
+                                    <input type="password" Required class="form-control" id="cPassword" placeholder="Password">
+                                    <span id="cPassword-error" class="text-danger"></span>
+                                </div>
+                                <div class="form-group justify-content-center">
+                                    <center><button type="submit" id="btnSubmit" class="btn btn-block col-4 mt-3">Register</button></center>
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>$("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+            type: "line",
+            height: "70",
+            width: "100%",
+            lineWidth: "2",
+            lineColor: "#177dff",
+            fillColor: "rgba(23, 125, 255, 0.14)",
+        });
+
+        $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+            type: "line",
+            height: "70",
+            width: "100%",
+            lineWidth: "2",
+            lineColor: "#f3545d",
+            fillColor: "rgba(243, 84, 93, .14)",
+        });
+
+        $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+            type: "line",
+            height: "70",
+            width: "100%",
+            lineWidth: "2",
+            lineColor: "#ffa534",
+            fillColor: "rgba(255, 165, 52, .14)",
+        });</script>
+
+</body>
+<script src="~/assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="~/assets/js/core/popper.min.js"></script>
+<script src="~/assets/js/core/bootstrap.min.js"></script>
+
+<!-- jQuery Scrollbar -->
+<script src="~/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+<!-- Chart JS -->
+<script src="~/assets/js/plugin/chart.js/chart.min.js"></script>
+
+<!-- jQuery Sparkline -->
+<script src="~/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+<!-- Chart Circle -->
+<script src="~/assets/js/plugin/chart-circle/circles.min.js"></script>
+
+<!-- Datatables -->
+<script src="~/assets/js/plugin/datatables/datatables.min.js"></script>
+
+<!-- Bootstrap Notify -->
+@* <script src="~/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script> *@
+
+<!-- jQuery Vector Maps -->
+<script src="~/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+<script src="~/assets/js/plugin/jsvectormap/world.js"></script>
+
+<!-- Sweet Alert -->
+<script src="~/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+<!-- Kaiadmin JS -->
+<script src="~/assets/js/kaiadmin.min.js"></script>
+
+<!-- Kaiadmin DEMO methods, don't include it in your project! -->
+<script src="~/assets/js/setting-demo.js"></script>
+<script src="~/assets/js/demo.js"></script>
+
+</html>

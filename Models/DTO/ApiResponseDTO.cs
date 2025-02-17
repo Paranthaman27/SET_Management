@@ -9,4 +9,3 @@ namespace SET_Management.Models.DTO
         public dynamic data { get; set; }
     }
 }
-

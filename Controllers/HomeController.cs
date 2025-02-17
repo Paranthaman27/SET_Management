@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using SET_Management_.Models;
+using SET_Management.Models;
 
-namespace SET_Management_.Controllers;
+namespace SET_Management .Controllers;
 
 public class HomeController : Controller
 {

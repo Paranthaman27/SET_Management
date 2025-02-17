@@ -1,4 +1,5 @@
-﻿namespace SET_Management_.Models;
+﻿
+namespace SET_Management.Models;
 
 public class ErrorViewModel
 {
