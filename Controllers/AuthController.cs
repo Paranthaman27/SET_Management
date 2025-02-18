@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SET_Management.Helpers.DbContexts;
 using SET_Management.Interface;
@@ -6,6 +7,7 @@ using SET_Management.Models.DTO;
 using SET_Management.Models.Entity;
 using SET_Management.Repositories;
 using System;
+using Microsoft.AspNetCore.Session;
 using System.Text;
 
 namespace SET_Management.Controllers
@@ -62,6 +64,7 @@ namespace SET_Management.Controllers
                 ApiResponseDTO loginResult = _authRepose.loginUser(user);
                 if (loginResult.success)
                 {
+                    // HttpContext.Session.SetString("JWTToken", loginResult.data);
                     return RedirectToAction("Index", "Home");
                 }
                 ViewBag.vbLoginError = loginResult.message;

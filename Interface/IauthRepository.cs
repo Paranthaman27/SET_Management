@@ -5,8 +5,9 @@ namespace SET_Management.Interface
 {
     public interface IauthRepository
     {
-        ApiResponseDTO checkUserExist(string useremail);
         ApiResponseDTO registerNewUser(mstUser user);
         ApiResponseDTO loginUser(userDTO user);
+        ApiResponseDTO checkUserExistByEmail(string useremail);
+
     }
 }

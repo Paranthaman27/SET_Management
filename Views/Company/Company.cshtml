@@ -1,0 +1,148 @@
+﻿@{
+    ViewData["Title"] = "Company Management";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<div class="container mt-5">
+    <h2>Company Management</h2>
+    <button class="btn btn-success mb-3" onclick="openCompanyModal()">+ New Company</button>
+
+    <table id="companyTable" class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Company Name</th>
+                <th>GST No</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<!-- Company Modal -->
+<div class="modal fade" id="companyModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Add Company</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="companyForm">
+                    <input type="hidden" id="mstCompanyId">
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" id="companyName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>GST No</label>
+                        <input type="text" id="companyGSTNo" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" id="city" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>State</label>
+                        <input type="text" id="state" class="form-control">
+                    </div>
+                    <button type="submit" onclick="fnsavedetails();" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>$(document).ready(function () {
+    loadCompanyTable();
+});
+
+    function loadCompanyTable() {
+
+        debugger;
+    $('#companyTable').DataTable({
+        "ajax": {
+            url: '@Url.Action("GetCompanyList", "Company")',
+            "type": "GET",
+            "datatype": "json"
+        },
+        "columns": [
+            { "data": "mstCompanyId" },
+            { "data": "companyName" },
+            { "data": "companyGSTNo" },
+            { "data": "city" },
+            { "data": "state" },
+            {
+                "data": null,
+                "render": function (data) {
+                    return `<button class="btn btn-info" onclick="viewCompany(${data.mstCompanyId})">View</button>
+                            <button class="btn btn-warning" onclick="editCompany(${data.mstCompanyId})">Edit</button>
+                            <button class="btn btn-danger" onclick="deleteCompany(${data.mstCompanyId})">Delete</button>`;
+                }
+            }
+        ]
+    });
+}
+
+    function openCompanyModal() {
+        debugger;
+    $('#modalTitle').text("Add Company");
+    $('#companyForm')[0].reset();
+    $('#companyModal').modal('show');
+    };
+
+    function fnsavedetails() {
+        debugger;
+        var companyData = {
+            companyName: $('#companyName').val(),
+            companyGSTNo: $('#companyGSTNo').val(),
+            city: $('#city').val(),
+            state: $('#state').val()
+        };
+        $.ajax({
+            url: '@Url.Action("SaveCompany", "Company")',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(companyData),
+            success: function () {
+                $('#companyModal').modal('hide');
+                $('#companyTable').DataTable().ajax.reload();
+            }
+        });
+    }
+
+    function editCompany(id) {
+        $('#modalTitle').text("Edit Company");
+        $('#companyModal').modal('show');
+
+        $.ajax({
+            url: `/Company/GetCompanyById/${id}`,
+            type: 'GET',
+            contentType: 'application/json',
+            success: function (data) {
+                $('#mstCompanyId').val(data.mstCompanyId);
+                $('#companyName').val(data.companyName);
+                $('#companyGSTNo').val(data.companyGSTNo);
+                $('#city').val(data.city);
+                $('#state').val(data.state);
+            }
+        });
+    }
+
+    function deleteCompany(id) {
+        if (confirm("Are you sure you want to delete this company?")) {
+            $.ajax({
+                url: `/Company/DeleteCompany/${id}`,
+                type: "DELETE",
+                success: function () {
+                    $('#companyTable').DataTable().ajax.reload();
+                }
+            });
+        }
+    }
+</script>
+

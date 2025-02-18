@@ -25,12 +25,15 @@ internal class Program
         //builder.Services.AddDbContext<dbContext>(options =>options.UseSqlServer(connectionString));
 
         builder.Services.AddSingleton<ApiResponseRepository>();
-        builder.Services.AddScoped<authRepository>();
+        builder.Services.AddScoped<authRepository>(); //companyRepository
+        builder.Services.AddScoped<vehicleRepository>();
+        builder.Services.AddScoped<companyRepository>();
 
-        // Register IApiResponseRepository and its implementation
+        // Register InterfaceRepository and its implementation
         builder.Services.AddScoped<IApiResponseRepository, ApiResponseRepository>();
         builder.Services.AddScoped<IauthRepository, authRepository>();
-
+        builder.Services.AddScoped<IvehicleRepository, vehicleRepository>();
+        builder.Services.AddScoped<IcompanyRepository, companyRepository>();
 
         // Register your middleware
         builder.Services.AddScoped<globalExceptionHandlingMiddleware>();

@@ -12,15 +12,20 @@
     <None Remove="Repositories\" />
     <None Remove="Helper\DbContexts\" />
     <None Remove="Views\Auth\" />
+    <None Remove="Views\Vehicle\" />
+    <None Remove="Views\Company\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
     <Folder Include="Helper\DbContexts\" />
     <Folder Include="Views\Auth\" />
+    <Folder Include="Views\Vehicle\" />
+    <Folder Include="Views\Company\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.20" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.16" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.20" />
   </ItemGroup>
 </Project>
