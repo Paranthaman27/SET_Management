@@ -20,9 +20,9 @@ namespace SET_Management.Repositories
             _dbContext = dbContext;
             _apiResponseRepository = apiResponseRepository;
         }
-        public ApiResponseDTO checkCompanyExistById(int companyId)
+        public ApiResponseDTO checkCompanyExistById(int mstCompanyId)
         {
-            var companyDetails = _dbContext.mstCompany.Where(a => a.companyId == companyId).FirstOrDefault();
+            var companyDetails = _dbContext.mstCompany.Where(a => a.mstCompanyId == mstCompanyId).FirstOrDefault();
             if (companyDetails != null)
             {
                 return _apiResponseRepository.SuccessResponse(new ApiResponseDTO { message = "Company Details Exist", data = companyDetails });
@@ -40,7 +40,7 @@ namespace SET_Management.Repositories
         }
         public ApiResponseDTO addcompanydetails(mstCompany company)
         {
-            ApiResponseDTO resultcompanyDetails = checkCompanyExistById(company.companyId);
+            ApiResponseDTO resultcompanyDetails = checkCompanyExistById(company.mstCompanyId);
             mstCompany companyData = resultcompanyDetails.data;
             if (resultcompanyDetails.success != true)
             {
@@ -56,7 +56,7 @@ namespace SET_Management.Repositories
         }
         public ApiResponseDTO editcompanydetails(mstCompany company)
         {
-            ApiResponseDTO resultcompanyDetails = checkCompanyExistById(company.companyId);
+            ApiResponseDTO resultcompanyDetails = checkCompanyExistById(company.mstCompanyId);
             mstCompany companyData = resultcompanyDetails.data;
             if (resultcompanyDetails.success == true && companyData.isActive == true)
             {
@@ -73,7 +73,7 @@ namespace SET_Management.Repositories
         }
         public ApiResponseDTO deletecompanydetails(mstCompany company)
         {
-            ApiResponseDTO resultcompanyDetails = checkCompanyExistById(company.companyId);
+            ApiResponseDTO resultcompanyDetails = checkCompanyExistById(company.mstCompanyId);
             mstCompany companyData = resultcompanyDetails.data;
             if (resultcompanyDetails.success == true && companyData.isActive == true)
             {

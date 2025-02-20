@@ -1,9 +1,11 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SET_Management.Interface;
+using SET_Management.Models.DTO;
 using SET_Management.Models.Entity;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,20 +23,24 @@ namespace SET_Management.Controllers
         }
         public IActionResult Company()
         {
+            var companies = _companyRepose.getcompanyList();
+            List<mstCompany> companyList = companies.data;
+            ApiResponseDTO viewModel = new ApiResponseDTO();
+            viewModel.data = companyList;
             return View();
         }
         [HttpGet]
         public IActionResult GetCompanyList()
         {
             var companies = _companyRepose.getcompanyList();
-            return Json(companies.data);
+            return Json(companies);
         }
 
         [HttpGet]
         public IActionResult GetCompanyById(int id)
         {
             var company = _companyRepose.checkCompanyExistById(id);
-            return Json(company.data);
+            return Json(company);
         }
 
         [HttpPost]

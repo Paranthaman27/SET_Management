@@ -7,6 +7,9 @@ using SET_Management.Helpers.Middlewares;
 using SET_Management.Interface;
 using SET_Management.Repositories;
 using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 internal class Program
 {
@@ -40,6 +43,26 @@ internal class Program
 
         // Add services to the container
         builder.Services.AddControllersWithViews();
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+        {
+            options.RequireHttpsMetadata = false;
+            options.SaveToken = true;
+            options.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidAudience = builder.Configuration["Jwt:Audience"],
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+            };
+        });
+
+        builder.Services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(2); // Set session timeout
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
 
         var app = builder.Build();
 
@@ -54,7 +77,8 @@ internal class Program
         app.UseStaticFiles();
 
         app.UseRouting();
-
+        app.UseSession();
+        app.UseAuthentication();
         app.UseAuthorization();
 
         // Use the middleware

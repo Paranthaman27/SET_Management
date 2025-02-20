@@ -1,148 +1,245 @@
 ﻿@{
-    ViewData["Title"] = "Company Management";
+    ViewBag.Title = "Company Management";
 }
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center mb-3">Company Management</h2>
+            <button class="btn btn-primary mb-3" onclick="openCreateModal()">➕ Add New Company</button>
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
-<div class="container mt-5">
-    <h2>Company Management</h2>
-    <button class="btn btn-success mb-3" onclick="openCompanyModal()">+ New Company</button>
-
-    <table id="companyTable" class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Company Name</th>
-                <th>GST No</th>
-                <th>City</th>
-                <th>State</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-    </table>
-</div>
-
-<!-- Company Modal -->
-<div class="modal fade" id="companyModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle">Add Company</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="companyForm">
-                    <input type="hidden" id="mstCompanyId">
-                    <div class="form-group">
-                        <label>Company Name</label>
-                        <input type="text" id="companyName" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>GST No</label>
-                        <input type="text" id="companyGSTNo" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>City</label>
-                        <input type="text" id="city" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>State</label>
-                        <input type="text" id="state" class="form-control">
-                    </div>
-                    <button type="submit" onclick="fnsavedetails();" class="btn btn-primary">Save</button>
-                </form>
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Company List</h4>
+                </div>
+                <div class="card-body">
+                    <table id="companyTable" class="table table-bordered">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script>$(document).ready(function () {
-    loadCompanyTable();
-});
+<!-- Create/Edit Modal -->
+<div id="companyModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Company Details</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="mstCompanyId" />
 
-    function loadCompanyTable() {
+                <div class="form-group">
+                    <label>Company ID</label>
+                    <input type="number" id="companyId" class="form-control" placeholder="Enter company ID" />
+                </div>
 
-        debugger;
-    $('#companyTable').DataTable({
-        "ajax": {
-            url: '@Url.Action("GetCompanyList", "Company")',
-            "type": "GET",
-            "datatype": "json"
-        },
-        "columns": [
-            { "data": "mstCompanyId" },
-            { "data": "companyName" },
-            { "data": "companyGSTNo" },
-            { "data": "city" },
-            { "data": "state" },
-            {
-                "data": null,
-                "render": function (data) {
-                    return `<button class="btn btn-info" onclick="viewCompany(${data.mstCompanyId})">View</button>
-                            <button class="btn btn-warning" onclick="editCompany(${data.mstCompanyId})">Edit</button>
-                            <button class="btn btn-danger" onclick="deleteCompany(${data.mstCompanyId})">Delete</button>`;
-                }
-            }
-        ]
-    });
-}
+                <div class="form-group">
+                    <label>GST No</label>
+                    <input type="text" id="companyGSTNo" class="form-control" placeholder="Enter GST Number" />
+                </div>
 
-    function openCompanyModal() {
-        debugger;
-    $('#modalTitle').text("Add Company");
-    $('#companyForm')[0].reset();
-    $('#companyModal').modal('show');
-    };
+                <div class="form-group">
+                    <label>Company Name</label>
+                    <input type="text" id="companyName" class="form-control" placeholder="Enter company name" />
+                </div>
 
-    function fnsavedetails() {
-        debugger;
-        var companyData = {
-            companyName: $('#companyName').val(),
-            companyGSTNo: $('#companyGSTNo').val(),
-            city: $('#city').val(),
-            state: $('#state').val()
-        };
-        $.ajax({
-            url: '@Url.Action("SaveCompany", "Company")',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(companyData),
-            success: function () {
-                $('#companyModal').modal('hide');
-                $('#companyTable').DataTable().ajax.reload();
-            }
+                <div class="form-group">
+                    <label>Address Line 1</label>
+                    <input type="text" id="addressLine1" class="form-control" placeholder="Enter address" />
+                </div>
+
+                <div class="form-group">
+                    <label>Address Line 2</label>
+                    <input type="text" id="addressLine2" class="form-control" placeholder="Enter address" />
+                </div>
+
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" id="city" class="form-control" placeholder="Enter city" />
+                </div>
+
+                <div class="form-group">
+                    <label>State</label>
+                    <input type="text" id="state" class="form-control" placeholder="Enter state" />
+                </div>
+
+                <div class="form-group">
+                    <label>Pin Code</label>
+                    <input type="number" id="pinCode" class="form-control" placeholder="Enter pin code" />
+                </div>
+
+                <div class="form-group">
+                    <label>Created By</label>
+                    <input type="number" id="createdBy" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Updated By</label>
+                    <input type="number" id="updatedBy" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Deleted By</label>
+                    <input type="number" id="deletedBy" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Is Active</label>
+                    <select id="isActive" class="form-control">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Is GST</label>
+                    <select id="isGST" class="form-control">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="saveCompany()">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this company?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        $(document).ready(function () {
+            loadCompanies();
         });
-    }
 
-    function editCompany(id) {
-        $('#modalTitle').text("Edit Company");
-        $('#companyModal').modal('show');
-
-        $.ajax({
-            url: `/Company/GetCompanyById/${id}`,
-            type: 'GET',
-            contentType: 'application/json',
-            success: function (data) {
-                $('#mstCompanyId').val(data.mstCompanyId);
-                $('#companyName').val(data.companyName);
-                $('#companyGSTNo').val(data.companyGSTNo);
-                $('#city').val(data.city);
-                $('#state').val(data.state);
-            }
-        });
-    }
-
-    function deleteCompany(id) {
-        if (confirm("Are you sure you want to delete this company?")) {
+        function loadCompanies() {
+            debugger;
             $.ajax({
-                url: `/Company/DeleteCompany/${id}`,
-                type: "DELETE",
-                success: function () {
-                    $('#companyTable').DataTable().ajax.reload();
+                url: '@Url.Action("GetCompanyList", "Company")',
+                type: 'GET',
+                success: function (data) {
+                    let rows = '';
+                    var resultdata = data.data;
+                    $.each(resultdata, function (i, company) {
+                        rows += `<tr>
+                                    <td>${company.mstCompanyId}</td>
+                                    <td>${company.companyName}</td>
+                                    <td>
+                                        <button class='btn btn-warning' onclick='openEditModal(${JSON.stringify(company)})'>✏️ Edit</button>
+                                        <button class='btn btn-danger' onclick='openDeleteModal(${company.mstCompanyId})'>🗑 Delete</button>
+                                    </td>
+                                 </tr>`;
+                    });
+                    $('#companyTable tbody').html(rows);
                 }
             });
         }
-    }
-</script>
+
+        function openCreateModal() {
+            $('#companyModal input, #companyModal select').val('');
+            $('#companyModal').modal('show');
+        }
+
+        function openEditModal(company) {
+            $('#mstCompanyId').val(company.mstCompanyId);
+            $('#companyId').val(company.companyId);
+            $('#companyGSTNo').val(company.companyGSTNo);
+            $('#companyName').val(company.companyName);
+            $('#addressLine1').val(company.addressLine1);
+            $('#addressLine2').val(company.addressLine2);
+            $('#city').val(company.city);
+            $('#state').val(company.state);
+            $('#pinCode').val(company.pinCode);
+            $('#createdBy').val(company.createdBy);
+            $('#updatedBy').val(company.updatedBy);
+            $('#deletedBy').val(company.deletdBy);
+            $('#isActive').val(company.isActive.toString());
+            $('#isGST').val(company.isGST.toString());
+
+            $('#companyModal').modal('show');
+        }
+
+        function saveCompany() {
+            let company = {
+                mstCompanyId: $('#mstCompanyId').val(),
+                companyId: $('#companyId').val(),
+                companyGSTNo: $('#companyGSTNo').val(),
+                companyName: $('#companyName').val(),
+                addressLine1: $('#addressLine1').val(),
+                addressLine2: $('#addressLine2').val(),
+                city: $('#city').val(),
+                state: $('#state').val(),
+                pinCode: $('#pinCode').val(),
+                createdBy: $('#createdBy').val(),
+                updatedBy: $('#updatedBy').val(),
+                deletdBy: $('#deletedBy').val(),
+                isActive: $('#isActive').val() === "true",
+                isGST: $('#isGST').val() === "true"
+            };
+
+            $.ajax({
+                url: '@Url.Action("SaveCompany", "Company")',
+                type: 'POST',
+                data: company,
+                success: function (res) {
+                    alert(res.message);
+                    $('#companyModal').modal('hide');
+                    loadCompanies();
+                }
+            });
+        }
+
+        function openDeleteModal(id) {
+            $('#deleteModal').modal('show');
+            $('#deleteModal').data('id', id);
+        }
+
+        function confirmDelete() {
+            let id = $('#deleteModal').data('id');
+            $.ajax({
+                url: '@Url.Action("DeleteCompany", "Company")',
+                type: 'DELETE',
+                data: { id: id },
+                success: function (res) {
+                    alert(res.message);
+                    $('#deleteModal').modal('hide');
+                    loadCompanies();
+                }
+            });
+        }
+    </script>
+
 
