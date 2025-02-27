@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SET_Management.Helpers.DbContexts;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SET_Management.Helpers.Filters;
 using SET_Management.Interface;
 using SET_Management.Models.DTO;
 using SET_Management.Models.Entity;
@@ -12,6 +13,8 @@ using SET_Management.Models.Entity;
 
 namespace SET_Management.Controllers
 {
+    [SessionAuthorize]
+    // [RoleAuthorize("Driver")]
     public class CompanyController : Controller
     {
         private IApiResponseRepository _apiResponseRepository;
@@ -23,11 +26,12 @@ namespace SET_Management.Controllers
         }
         public IActionResult Company()
         {
+
             var companies = _companyRepose.getcompanyList();
             List<mstCompany> companyList = companies.data;
             ApiResponseDTO viewModel = new ApiResponseDTO();
             viewModel.data = companyList;
-            return View();
+            return View(viewModel.data);
         }
         [HttpGet]
         public IActionResult GetCompanyList()
@@ -46,7 +50,7 @@ namespace SET_Management.Controllers
         [HttpPost]
         public IActionResult SaveCompany(mstCompany company)
         {
-            if (company.mstCompanyId != null)
+            if (company.mstCompanyId == 0)
                 return Json(_companyRepose.addcompanydetails(company));
             else
                 return Json(_companyRepose.editcompanydetails(company));

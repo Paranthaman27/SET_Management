@@ -4,8 +4,8 @@ using SET_Management.Models.Entity;
 
 namespace SET_Management.Interface
 {
-	public interface IcompanyRepository
-	{
+    public interface IcompanyRepository
+    {
         ApiResponseDTO checkCompanyExistById(int companyId);
         ApiResponseDTO getcompanyList();
         ApiResponseDTO addcompanydetails(mstCompany company);
@@ -15,4 +15,3 @@ namespace SET_Management.Interface
 
     }
 }
-

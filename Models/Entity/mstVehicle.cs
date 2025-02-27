@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,11 +27,9 @@ namespace SET_Management.Models.Entity
         public DateTime createdDate { get; set; } = DateTime.Now;
         public int updatedBy { get; set; }
         public DateTime? updatedDate { get; set; }
-        public int deletdBy { get; set; }
+        public int deletedBy { get; set; }
         public DateTime? deletedDate { get; set; }
         public bool isActive { get; set; } = true;
         public bool isDue { get; set; } = true;
     }
-
 }
-

@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SET_Management.Helpers.DbContexts;
 using SET_Management.Interface;
+using SET_Management.Models;
 using SET_Management.Models.DTO;
 using SET_Management.Models.Entity;
 using SET_Management.Repositories;
+using System.Collections.Generic;
 using System;
-using Microsoft.AspNetCore.Session;
 using System.Text;
+using static SET_Management.Models.clsCommon;
 
 namespace SET_Management.Controllers
 {
@@ -33,6 +35,8 @@ namespace SET_Management.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            HttpContext.Session.Clear();
+            ViewBag.SessionId = HttpContext.Session?.GetString("userSessionId");
             return View();
         }
 
@@ -42,6 +46,8 @@ namespace SET_Management.Controllers
             ApiResponseDTO registerResult = _authRepose.registerNewUser(user);
             if (registerResult.success == true)
             {
+
+
                 return RedirectToAction("Login", "Auth");
             }
             ViewBag.vbRegisterWError = registerResult.message;
@@ -64,7 +70,13 @@ namespace SET_Management.Controllers
                 ApiResponseDTO loginResult = _authRepose.loginUser(user);
                 if (loginResult.success)
                 {
-                    // HttpContext.Session.SetString("JWTToken", loginResult.data);
+                    string jwtdata = loginResult.data.jwtToken.ToString();
+                    mstUser userdata = loginResult.data.userDatas;
+                    string mstUserId = userdata.mstUserId.ToString();
+                    HttpContext.Session.SetString("JWTToken", jwtdata);
+                    HttpContext.Session.SetString("userSessionId", mstUserId);
+                    string Role = getUserType(userdata.userTypeId);
+                    HttpContext.Session.SetString("Role", Role);
                     return RedirectToAction("Index", "Home");
                 }
                 ViewBag.vbLoginError = loginResult.message;

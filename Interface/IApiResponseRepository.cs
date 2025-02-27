@@ -1,5 +1,4 @@
-﻿using System;
-using SET_Management.Models.DTO;
+﻿using SET_Management.Models.DTO;
 
 namespace SET_Management.Interface
 {
@@ -8,6 +7,4 @@ namespace SET_Management.Interface
         ApiResponseDTO SuccessResponse(ApiResponseDTO responseInfo);
         ApiResponseDTO FailureResponse(ApiResponseDTO responseInfo);
     }
-
 }
-

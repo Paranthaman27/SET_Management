@@ -10,6 +10,7 @@ using System;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using SET_Management.Helpers.Filters;
 
 internal class Program
 {
@@ -22,21 +23,25 @@ internal class Program
 
         builder.Services.AddDbContext<dbContext>(option => option.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 3, 0))));
 
-         // string connectionString = @"Server=172.16.15.17;Database=testDB;user=sa;password=Rndsoft@123";
+        // string connectionString = @"Server=172.16.15.17;Database=testDB;user=sa;password=Rndsoft@123";
 
         // Register your dbContext with the dependency injection container
         //builder.Services.AddDbContext<dbContext>(options =>options.UseSqlServer(connectionString));
 
         builder.Services.AddSingleton<ApiResponseRepository>();
-        builder.Services.AddScoped<authRepository>(); //companyRepository
+        builder.Services.AddScoped<authRepository>();
         builder.Services.AddScoped<vehicleRepository>();
         builder.Services.AddScoped<companyRepository>();
+        builder.Services.AddScoped<SessionAuthorizeAttribute>();
 
-        // Register InterfaceRepository and its implementation
+
+        // Register Repositories and its implementation
         builder.Services.AddScoped<IApiResponseRepository, ApiResponseRepository>();
         builder.Services.AddScoped<IauthRepository, authRepository>();
         builder.Services.AddScoped<IvehicleRepository, vehicleRepository>();
         builder.Services.AddScoped<IcompanyRepository, companyRepository>();
+        builder.Services.AddScoped<IrentalRepository, rentalRepository>();
+        builder.Services.AddScoped<IinvoiceRepository, invoiceRepository>();
 
         // Register your middleware
         builder.Services.AddScoped<globalExceptionHandlingMiddleware>();
@@ -64,6 +69,7 @@ internal class Program
             options.Cookie.IsEssential = true;
         });
 
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline
@@ -86,7 +92,7 @@ internal class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+            pattern: "{controller=Auth}/{action=Login}/{id?}");
 
         app.Run();
     }

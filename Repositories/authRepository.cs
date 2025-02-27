@@ -4,11 +4,15 @@ using SET_Management.Helpers.DbContexts;
 using SET_Management.Models.Entity;
 using SET_Management.Interface;
 using SET_Management.Models.DTO;
+using SET_Management.Helpers.Filters;
 using System;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Session;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace SET_Management.Repositories
 {
@@ -56,12 +60,13 @@ namespace SET_Management.Repositories
         {
             ApiResponseDTO resultUserDetails = checkUserExistByEmail(user.userEmail);
             mstUser userData = resultUserDetails.data;
+
             if (resultUserDetails.success == true && userData.isActive == true)
             {
                 if (userData.userPassword == user.userPassword)
                 {
-                   // var jwttoken = JWT(userData);
-                    return _apiResponseRepository.SuccessResponse(new ApiResponseDTO { message = "User Already Exist"});
+                    var jwttoken = JWT(userData);
+                    return _apiResponseRepository.SuccessResponse(new ApiResponseDTO { message = "User Already Exist", data = new { userDatas = userData, jwtToken = jwttoken } });
                 }
                 return _apiResponseRepository.FailureResponse(new ApiResponseDTO { message = "InValid Password" });
             }
@@ -89,7 +94,4 @@ namespace SET_Management.Repositories
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
-
-
-
 }

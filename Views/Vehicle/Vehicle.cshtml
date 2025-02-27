@@ -1,1 +1,177 @@
-﻿
+﻿@{
+    ViewBag.Title = "Vehicle Management";
+}
+
+<div class="page-inner">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">Vehicle Details</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Vehicle</a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Vehicle Details</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <h4 class="card-title">Vehicle Table</h4>
+                    <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" onclick="openCreateModal()">
+                        <i class="fa fa-plus"></i> Add Vehicle
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="vehicleTable" class="table table-bordered table-head-bg-secondary  table-bordered-bd-secondary mt-4 ">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Reg No</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create/Edit Modal -->
+<div class="modal fade" id="vehicleModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">Vehicle Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" id="mstVehicleId" />
+                    <div class="form-group">
+                        <label>Vehicle Reg No</label>
+                        <input type="text" id="vehicleRegNo" class="form-control" placeholder="Enter vehicle reg no" />
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle Name</label>
+                        <input type="text" id="vehicleName" class="form-control" placeholder="Enter vehicle name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle Type</label>
+                        <input type="text" id="vehiclType" class="form-control" placeholder="Enter vehicle type" />
+                    </div>
+                    <div class="form-group">
+                        <label>Weight Passing (Kg)</label>
+                        <input type="number" id="weightPassingKg" class="form-control" placeholder="Enter weight capacity" />
+                    </div>
+                    <div class="form-group">
+                        <label>Purchase Date</label>
+                        <input type="date" id="purchaseDate" class="form-control" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="saveVehicle()">Save</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        loadVehicles();
+    });
+
+    function loadVehicles() {
+        $.ajax({
+            url: '@Url.Action("GetVehicleList", "Vehicle")',
+            type: 'GET',
+            success: function (data) {
+                let rows = '';
+                data.forEach(vehicle => {
+                    rows += `<tr>
+                        <td>${vehicle.mstVehicleId}</td>
+                        <td>${vehicle.vehicleRegNo}</td>
+                        <td>${vehicle.vehicleName}</td>
+                        <td>${vehicle.vehiclType}</td>
+                        <td>
+                            <button class='btn btn-warning' onclick='openEditModal(${JSON.stringify(vehicle)})'>✏️ Edit</button>
+                            <button class='btn btn-danger' onclick='openDeleteModal(${vehicle.mstVehicleId})'>🗑 Delete</button>
+                        </td>
+                    </tr>`;
+                });
+                $('#vehicleTable tbody').html(rows);
+            }
+        });
+    }
+
+    function openCreateModal() {
+        $('#vehicleModal input').val('');
+        $('#vehicleModal').modal('show');
+    }
+
+    function openEditModal(vehicle) {
+        $('#mstVehicleId').val(vehicle.mstVehicleId);
+        $('#vehicleRegNo').val(vehicle.vehicleRegNo);
+        $('#vehicleName').val(vehicle.vehicleName);
+        $('#vehiclType').val(vehicle.vehiclType);
+        $('#weightPassingKg').val(vehicle.weightPassingKg);
+        $('#purchaseDate').val(vehicle.purchaseDate.split('T')[0]);
+        $('#vehicleModal').modal('show');
+    }
+
+    function saveVehicle() {
+        let vehicle = {
+            mstVehicleId: $('#mstVehicleId').val(),
+            vehicleRegNo: $('#vehicleRegNo').val(),
+            vehicleName: $('#vehicleName').val(),
+            vehiclType: $('#vehiclType').val(),
+            weightPassingKg: $('#weightPassingKg').val(),
+            purchaseDate: $('#purchaseDate').val()
+        };
+
+        $.ajax({
+            url: '@Url.Action("SaveVehicle", "Vehicle")',
+            type: 'POST',
+            data: vehicle,
+            success: function (res) {
+                alert(res.message);
+                $('#vehicleModal').modal('hide');
+                loadVehicles();
+            }
+        });
+    }
+
+    function openDeleteModal(id) {
+        if (confirm("Are you sure you want to delete this vehicle?")) {
+            $.ajax({
+                url: '@Url.Action("DeleteVehicle", "Vehicle")',
+                type: 'DELETE',
+                data: { id: id },
+                success: function (res) {
+                    alert(res.message);
+                    loadVehicles();
+                }
+            });
+        }
+    }
+</script>

@@ -1,27 +1,53 @@
 ﻿@{
     ViewBag.Title = "Company Management";
 }
-<div class="container mt-4">
+
+
+<div class="page-inner">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">Company Details</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Company</a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">Company Details</a>
+            </li>
+        </ul>
+    </div>
     <div class="row">
         <div class="col-md-12">
-            <h2 class="text-center mb-3">Company Management</h2>
-            <button class="btn btn-primary mb-3" onclick="openCreateModal()">➕ Add New Company</button>
-
             <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h4>Company List</h4>
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <h4 class="card-title">Company Table</h4>
+                        <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" onclick="openCreateModal()"> <i class="fa fa-plus"></i> Add Company</button>
+                    </div>
                 </div>
                 <div class="card-body">
-                    <table id="companyTable" class="table table-bordered">
-                        <thead class="bg-dark text-white">
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="companyTable" class=" table table-bordered table-head-bg-secondary  table-bordered-bd-secondary mt-4 ">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -29,97 +55,86 @@
 </div>
 
 <!-- Create/Edit Modal -->
-<div id="companyModal" class="modal fade">
-    <div class="modal-dialog">
+<div class="modal fade" id="companyModal" tabindex="-1" role="dialog"
+     aria-labelledby="companyModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title">Company Details</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="companyModalLabel">
+                    Company Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
             </div>
             <div class="modal-body">
-                <input type="hidden" id="mstCompanyId" />
+                <form>
+                    <input type="hidden" id="mstCompanyId" />
+                    <div class="row form-group">
+                        <div class="form-group col-3">
+                            <label>Company ID</label>
+                            <input type="number" id="companyId" class="form-control" placeholder="Company ID" />
+                        </div>
 
-                <div class="form-group">
-                    <label>Company ID</label>
-                    <input type="number" id="companyId" class="form-control" placeholder="Enter company ID" />
-                </div>
+                        <div class="form-group col-9">
+                            <label>Company Name</label>
+                            <input type="text" id="companyName" class="form-control" placeholder="Enter company name" />
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                    <label>GST No</label>
-                    <input type="text" id="companyGSTNo" class="form-control" placeholder="Enter GST Number" />
-                </div>
+                    <div class="form-group">
+                        <label>GST No</label>
+                        <input type="text" id="companyGSTNo" class="form-control" placeholder="Enter GST Number" />
+                    </div>
 
-                <div class="form-group">
-                    <label>Company Name</label>
-                    <input type="text" id="companyName" class="form-control" placeholder="Enter company name" />
-                </div>
+                    <div class="form-group">
+                        <label>Address Line 1</label>
+                        <input type="text" id="addressLine1" class="form-control" placeholder="Enter address" />
+                    </div>
 
-                <div class="form-group">
-                    <label>Address Line 1</label>
-                    <input type="text" id="addressLine1" class="form-control" placeholder="Enter address" />
-                </div>
+                    <div class="form-group">
+                        <label>Address Line 2</label>
+                        <input type="text" id="addressLine2" class="form-control" placeholder="Enter address" />
+                    </div>
+                    <div class="row form-group">
+                        <div class="form-group col-9">
+                            <label>City</label>
+                            <input type="text" id="city" class="form-control" placeholder="Enter city" />
+                        </div>
+                        <div class="form-group col-3">
+                            <label>Is GST</label>
+                            <select id="isGST" class="form-control">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
 
-                <div class="form-group">
-                    <label>Address Line 2</label>
-                    <input type="text" id="addressLine2" class="form-control" placeholder="Enter address" />
-                </div>
+                    </div>
 
-                <div class="form-group">
-                    <label>City</label>
-                    <input type="text" id="city" class="form-control" placeholder="Enter city" />
-                </div>
+                    <div class="row form-group">
+                        <div class="form-group col-9">
+                            <label>State</label>
+                            <input type="text" id="state" class="form-control" placeholder="Enter state" />
+                        </div>
+                        <div class="form-group col-3">
+                            <label>Pin Code</label>
+                            <input type="number" id="pinCode" class="form-control" placeholder="Enter pin code" />
+                        </div>
 
-                <div class="form-group">
-                    <label>State</label>
-                    <input type="text" id="state" class="form-control" placeholder="Enter state" />
-                </div>
 
-                <div class="form-group">
-                    <label>Pin Code</label>
-                    <input type="number" id="pinCode" class="form-control" placeholder="Enter pin code" />
-                </div>
+                    </div>
 
-                <div class="form-group">
-                    <label>Created By</label>
-                    <input type="number" id="createdBy" class="form-control" />
-                </div>
 
-                <div class="form-group">
-                    <label>Updated By</label>
-                    <input type="number" id="updatedBy" class="form-control" />
-                </div>
 
-                <div class="form-group">
-                    <label>Deleted By</label>
-                    <input type="number" id="deletedBy" class="form-control" />
-                </div>
-
-                <div class="form-group">
-                    <label>Is Active</label>
-                    <select id="isActive" class="form-control">
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Is GST</label>
-                    <select id="isGST" class="form-control">
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                    </select>
-                </div>
-
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" onclick="saveCompany()">Save</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
-
-
 <!-- Delete Confirmation Modal -->
 <div id="deleteModal" class="modal fade">
     <div class="modal-dialog">
@@ -140,106 +155,105 @@
 </div>
 
 
-    <script>
-        $(document).ready(function () {
-            loadCompanies();
+<script>
+    $(document).ready(function () {
+        $("#companyTable").DataTable({});
+        loadCompanies();
+    });
+
+    function loadCompanies() {
+        debugger;
+        $.ajax({
+            url: '@Url.Action("GetCompanyList", "Company")',
+            type: 'GET',
+            success: function (data) {
+                let rows = '';
+                var resultdata = data.data;
+                $.each(resultdata, function (i, company) {
+                    rows += `<tr>
+                                        <td>${company.mstCompanyId}</td>
+                                        <td>${company.companyName}</td>
+                                        <td>
+                                            <button class='btn btn-warning' onclick='openEditModal(${JSON.stringify(company)})'>✏️ Edit</button>
+                                            <button class='btn btn-danger' onclick='openDeleteModal(${company.mstCompanyId})'>🗑 Delete</button>
+                                        </td>
+                                     </tr>`;
+                });
+                $('#companyTable tbody').html(rows);
+            }
         });
+    }
 
-        function loadCompanies() {
-            debugger;
-            $.ajax({
-                url: '@Url.Action("GetCompanyList", "Company")',
-                type: 'GET',
-                success: function (data) {
-                    let rows = '';
-                    var resultdata = data.data;
-                    $.each(resultdata, function (i, company) {
-                        rows += `<tr>
-                                    <td>${company.mstCompanyId}</td>
-                                    <td>${company.companyName}</td>
-                                    <td>
-                                        <button class='btn btn-warning' onclick='openEditModal(${JSON.stringify(company)})'>✏️ Edit</button>
-                                        <button class='btn btn-danger' onclick='openDeleteModal(${company.mstCompanyId})'>🗑 Delete</button>
-                                    </td>
-                                 </tr>`;
-                    });
-                    $('#companyTable tbody').html(rows);
-                }
-            });
-        }
+    function openCreateModal() {
+        $('#companyModal input, #companyModal select').val('');
+        $('#companyModal').modal('show');
+    }
 
-        function openCreateModal() {
-            $('#companyModal input, #companyModal select').val('');
-            $('#companyModal').modal('show');
-        }
+    function openEditModal(company) {
+        $('#mstCompanyId').val(company.mstCompanyId);
+        $('#companyId').val(company.companyId);
+        $('#companyGSTNo').val(company.companyGSTNo);
+        $('#companyName').val(company.companyName);
+        $('#addressLine1').val(company.addressLine1);
+        $('#addressLine2').val(company.addressLine2);
+        $('#city').val(company.city);
+        $('#state').val(company.state);
+        $('#pinCode').val(company.pinCode);
+        $('#createdBy').val(company.createdBy);
+        $('#updatedBy').val(company.updatedBy);
+        $('#deletedBy').val(company.deletdBy);
+        $('#isActive').val(company.isActive.toString());
+        $('#isGST').val(company.isGST.toString());
 
-        function openEditModal(company) {
-            $('#mstCompanyId').val(company.mstCompanyId);
-            $('#companyId').val(company.companyId);
-            $('#companyGSTNo').val(company.companyGSTNo);
-            $('#companyName').val(company.companyName);
-            $('#addressLine1').val(company.addressLine1);
-            $('#addressLine2').val(company.addressLine2);
-            $('#city').val(company.city);
-            $('#state').val(company.state);
-            $('#pinCode').val(company.pinCode);
-            $('#createdBy').val(company.createdBy);
-            $('#updatedBy').val(company.updatedBy);
-            $('#deletedBy').val(company.deletdBy);
-            $('#isActive').val(company.isActive.toString());
-            $('#isGST').val(company.isGST.toString());
+        $('#companyModal').modal('show');
+    }
 
-            $('#companyModal').modal('show');
-        }
+    function saveCompany() {
+        let company = {
+            mstCompanyId: $('#mstCompanyId').val(),
+            companyId: $('#companyId').val(),
+            companyGSTNo: $('#companyGSTNo').val(),
+            companyName: $('#companyName').val(),
+            addressLine1: $('#addressLine1').val(),
+            addressLine2: $('#addressLine2').val(),
+            city: $('#city').val(),
+            state: $('#state').val(),
+            pinCode: $('#pinCode').val(),
+            createdBy: $('#createdBy').val(),
+            updatedBy: $('#updatedBy').val(),
+            deletdBy: $('#deletedBy').val(),
+            isActive: $('#isActive').val() === "true",
+            isGST: $('#isGST').val() === "true"
+        };
 
-        function saveCompany() {
-            let company = {
-                mstCompanyId: $('#mstCompanyId').val(),
-                companyId: $('#companyId').val(),
-                companyGSTNo: $('#companyGSTNo').val(),
-                companyName: $('#companyName').val(),
-                addressLine1: $('#addressLine1').val(),
-                addressLine2: $('#addressLine2').val(),
-                city: $('#city').val(),
-                state: $('#state').val(),
-                pinCode: $('#pinCode').val(),
-                createdBy: $('#createdBy').val(),
-                updatedBy: $('#updatedBy').val(),
-                deletdBy: $('#deletedBy').val(),
-                isActive: $('#isActive').val() === "true",
-                isGST: $('#isGST').val() === "true"
-            };
+        $.ajax({
+            url: '@Url.Action("SaveCompany", "Company")',
+            type: 'POST',
+            data: company,
+            success: function (res) {
+                alert(res.message);
+                $('#companyModal').modal('hide');
+                loadCompanies();
+            }
+        });
+    }
 
-            $.ajax({
-                url: '@Url.Action("SaveCompany", "Company")',
-                type: 'POST',
-                data: company,
-                success: function (res) {
-                    alert(res.message);
-                    $('#companyModal').modal('hide');
-                    loadCompanies();
-                }
-            });
-        }
+    function openDeleteModal(id) {
+        $('#deleteModal').modal('show');
+        $('#deleteModal').data('id', id);
+    }
 
-        function openDeleteModal(id) {
-            $('#deleteModal').modal('show');
-            $('#deleteModal').data('id', id);
-        }
-
-        function confirmDelete() {
-            let id = $('#deleteModal').data('id');
-            $.ajax({
-                url: '@Url.Action("DeleteCompany", "Company")',
-                type: 'DELETE',
-                data: { id: id },
-                success: function (res) {
-                    alert(res.message);
-                    $('#deleteModal').modal('hide');
-                    loadCompanies();
-                }
-            });
-        }
-    </script>
-
-
+    function confirmDelete() {
+        let id = $('#deleteModal').data('id');
+        $.ajax({
+            url: '@Url.Action("DeleteCompany", "Company")',
+            type: 'DELETE',
+            data: { id: id },
+            success: function (res) {
+                alert(res.message);
+                $('#deleteModal').modal('hide');
+                loadCompanies();
+            }
+        });
+    }
+</script>
