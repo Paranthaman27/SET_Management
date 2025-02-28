@@ -1,7 +1,8 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SET_Management.Interface;
+using SET_Management.Models;
 using SET_Management.Models.Entity;
+using static SET_Management.Models.clsViewModel;
 
 namespace SET_Management.Controllers
 {
@@ -9,14 +10,27 @@ namespace SET_Management.Controllers
     {
         private IApiResponseRepository _apiResponseRepository;
         private IinvoiceRepository _invoiceRepose;
-        public InvoiceController(IApiResponseRepository apiResponseRepository, IinvoiceRepository invoiceRepose)
+        private IcompanyRepository _companyRepose;
+        private IvehicleRepository _vehicleRepose;
+        private IrentalRepository _rentalRepose;
+        public InvoiceController(IApiResponseRepository apiResponseRepository, IinvoiceRepository invoiceRepose, IcompanyRepository companyRepose, IvehicleRepository vehicleRepose, IrentalRepository rentalRepose)
         {
             _apiResponseRepository = apiResponseRepository;
             _invoiceRepose = invoiceRepose;
+            _companyRepose = companyRepose;
+            _vehicleRepose = vehicleRepose;
+            _rentalRepose = rentalRepose;
         }
         public IActionResult Invoice()
         {
-            return View();
+            List<mstCompany> companyList = (_companyRepose.getcompanyList()).data;
+            List<mstVehicle> vehicleList = (_vehicleRepose.getVehicleList()).data;
+            //List<mstRentalEntry> rentalList = (_rentalRepose.getRentalList()).data;
+            clsInvoiceViewModel viewModel = new clsInvoiceViewModel();
+            viewModel.lstDrpCompany = companyList;
+            viewModel.lstDrpVehicle = vehicleList;
+            // viewModel.rentalList = rentalList;
+            return View(viewModel);
         }
         public IActionResult GetInvoiceList()
         {

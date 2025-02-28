@@ -1,4 +1,7 @@
-﻿
+﻿@model SET_Management.Models.clsRentalViewModel;
+@using SET_Management.Models.Entity;
+@using SET_Management.Models;
+@using Microsoft.AspNetCore.Http;
 @{
     ViewBag.Title = "Rental Entry";
 }
@@ -114,21 +117,36 @@
                             <label>Rental Date</label>
                             <div class="input-group">
                                 <input type="date" class="form-control" id="rentalDate" name="rentalDate">
-                                <span class="input-group-text">
-                                    <i class="fa fa-calendar"></i>
-                                </span>
                             </div>
                         </div>
                     </div>
-
-                    <div class="row form-group">
-
-                        <div class="form-group col-3">
-                            <label>Pin Code</label>
-                            <input type="number" id="pinCode" class="form-control" placeholder="Enter pin code" />
-                        </div>
-
-
+                    <div class="form-group">
+                        <label>Vehicle<span class="text-danger">*</span></label>
+                        <select class="form-control" name="vehicleId" id="drpdnvehicle">
+                            <option value="">-- Select Vehicle --</option>
+                            @if (Model.lstDrpVehicle != null)
+                            {
+                                <option value="-1">Unknown</option>
+                                @foreach (mstVehicle item in Model.lstDrpVehicle)
+                                {
+                                    <option value="@item.mstVehicleId">@item.vehicleRegNo</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Company<span class="text-danger">*</span></label>
+                        <select class="form-control" name="companyId" id="drpdnCompany">
+                            <option value="">-- Select Tester --</option>
+                            @if (Model.lstDrpCompany != null)
+                            {
+                                <option value="-1">Unknown</option>
+                                @foreach (mstCompany item in Model.lstDrpCompany)
+                                {
+                                    <option value="@item.mstCompanyId">@item.companyName</option>
+                                }
+                            }
+                        </select>
                     </div>
 
 
@@ -266,10 +284,6 @@
             }
         });
     }
-
-    //mstVehicleId
-    //mstUserId
-    //mstCompanyId
     function fnLoadDrpVehicle() {
         debugger;
         var vehicleDrpDown = $("#drpdnvehicle").val();
